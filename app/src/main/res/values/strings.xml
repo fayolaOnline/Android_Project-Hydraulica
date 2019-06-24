@@ -19,4 +19,6 @@
     <string name="menu_send">Send Me a Message</string>
 
     <string name="running">Calculating</string>
+
+    <string name="calc">Measure Force</string>
 </resources>
