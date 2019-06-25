@@ -8,11 +8,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 /**
@@ -24,6 +26,8 @@ import android.widget.EditText;
  * create an instance of this fragment.
  */
 public class CalcFragment extends Fragment {
+    public static String TAG = MainActivity.TAG+"::CalcFragment";
+
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_AIRP = "airP";
     private static final String ARG_RADIUS = "radius";
@@ -57,6 +61,7 @@ public class CalcFragment extends Fragment {
         args.putString(ARG_AIRP, airP);
         args.putString(ARG_RADIUS, radius);
         fragment.setArguments(args);
+        Log.d(TAG,"Fragment Created.");
         return fragment;
     }
 
@@ -85,14 +90,37 @@ public class CalcFragment extends Fragment {
             mAirPEdit.setText(mAirP);
             mRadiusEdit.setText(mRadius);
         }
+        mCalcForceBtn = view.findViewById(R.id.calc_force);
+        mCalcForceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double p, r;
+                p = Double.parseDouble(mAirPEdit.getText().toString());
+                r = Double.parseDouble(mRadiusEdit.getText().toString());
+                if (p < 20){
+                    mAirPEdit.setText("20.0");
+                    Toast.makeText(getActivity(),"Air Pressure must be between 10 and 300",Toast.LENGTH_LONG).show();
+                } else if (p > 300){
+                    mAirPEdit.setText("300.0");
+                    Toast.makeText(getActivity(),"Air Pressure must be between 10 and 300",Toast.LENGTH_LONG).show();
+                } else if (r < 0.025) {
+                    mRadiusEdit.setText("1.0");
+                    Toast.makeText(getActivity(),"Radius must be between 0.025 and 10",Toast.LENGTH_LONG).show();
+                } else if (r > 10) {
+                    mRadiusEdit.setText("1.0");
+                    Toast.makeText(getActivity(),"Radius must be between 0.025 and 10",Toast.LENGTH_LONG).show();
+                } else {
+                    double result = CylindricalForce.check(Double.parseDouble(mAirPEdit.getText().toString()), Double.parseDouble(mRadiusEdit.getText().toString()));
+                    if (mListener != null) {
+                        mListener.onCalcPerformed(result);
+                    }
+                }
+            }
+        });
+
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onCalcFragmentInteraction(uri);
-        }
-    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -122,7 +150,6 @@ public class CalcFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnCalcFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onCalcFragmentInteraction(Uri uri);
+        void onCalcPerformed(double result);
     }
 }

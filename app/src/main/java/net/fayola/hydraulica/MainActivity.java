@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -69,7 +70,9 @@ public class MainActivity extends AppCompatActivity
 
         //Loading initial fragment
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        CalcFragment cf = CalcFragment.newInstance("0.0","0.0");
+        //sending initial valued for the calculation form
+        String initialVal = "0.0";
+        CalcFragment cf = CalcFragment.newInstance(initialVal,initialVal);
         ft.replace(R.id.main_placeholder,cf);
         ft.commit();
 
@@ -134,8 +137,11 @@ public class MainActivity extends AppCompatActivity
 
 
     //Handling Fragments
-    @Override
-    public void onCalcFragmentInteraction(Uri uri) {
 
+
+
+    @Override
+    public void onCalcPerformed(double result) {
+        Toast.makeText(this,"The force calculated is: " + result,Toast.LENGTH_LONG).show();
     }
 }

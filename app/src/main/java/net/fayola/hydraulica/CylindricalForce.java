@@ -1,5 +1,7 @@
 package net.fayola.hydraulica;
 
+import android.util.Log;
+
 /***
  *     • Calculation for Cylindrical Force
  *         ◦ https://sciencing.com/calculate-pneumatic-cylinder-force-4897627.html
@@ -12,9 +14,13 @@ package net.fayola.hydraulica;
 
 
 public class CylindricalForce {
+    public static String TAG = MainActivity.TAG+"::CylyndricalForce";
+
     public static double check(double airP, double r){
         double ca = Math.pow(r,2.0)*Math.PI;
         double atmP = 14.696;
-        return (airP-atmP)*ca;
+        double result = (airP-atmP)*ca;
+        Log.d(TAG,"Cylindrical force of pressure:" + airP + " and " + "radius:" + r + " = " + result);
+        return result;
     }
 }
