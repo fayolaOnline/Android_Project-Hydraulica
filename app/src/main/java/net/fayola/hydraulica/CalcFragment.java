@@ -18,7 +18,7 @@ import android.widget.EditText;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CalcFragment.OnFragmentInteractionListener} interface
+ * {@link CalcFragment.OnCalcFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link CalcFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -31,7 +31,7 @@ public class CalcFragment extends Fragment {
     private String mAirP;
     private String mRadius;
 
-    private OnFragmentInteractionListener mListener;
+    private OnCalcFragmentInteractionListener mListener;
 
    //UI Components
     private EditText mAirPEdit;
@@ -90,15 +90,15 @@ public class CalcFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onCalcFragmentInteraction(uri);
         }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof OnCalcFragmentInteractionListener) {
+            mListener = (OnCalcFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -121,8 +121,8 @@ public class CalcFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnCalcFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onCalcFragmentInteraction(Uri uri);
     }
 }

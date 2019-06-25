@@ -1,5 +1,6 @@
 package net.fayola.hydraulica;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -19,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
 
@@ -28,7 +30,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, CalcFragment.OnCalcFragmentInteractionListener {
 
     public static String TAG ="TheHydraulicaApp";
     private static final String SID = "Laura Fayola Wallace\t#125-431-197";
@@ -63,7 +65,14 @@ public class MainActivity extends AppCompatActivity
         //printing to Logcat window
         Log.i(TAG,"~~~~~ "+SID+" ~ "+dateStr+" ~~~~~");
 
-        Log.i(TAG, "Main Activity Created!");
+        Log.d(TAG, "Main Activity Created!");
+
+        //Loading initial fragment
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        CalcFragment cf = CalcFragment.newInstance("0.0","0.0");
+        ft.replace(R.id.main_placeholder,cf);
+        ft.commit();
+
     }
 
     @Override
@@ -121,5 +130,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    //Handling Fragments
+    @Override
+    public void onCalcFragmentInteraction(Uri uri) {
+
     }
 }

@@ -9,7 +9,7 @@
     tools:showIn="@layout/app_bar_main">
 
     <!-- This will be our main placeholder for our calculation, suppliers and contact fragments -->
-<!--
+<!-- -->
     <FrameLayout
         android:id="@+id/main_placeholder"
         android:layout_width="match_parent"
@@ -18,6 +18,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
-   -->
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
