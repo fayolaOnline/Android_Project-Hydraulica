@@ -20,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.Menu;
@@ -149,8 +150,17 @@ public class MainActivity extends AppCompatActivity
 
     private void showResultsDialog(String result) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Fragment prev = getSupportFragmentManager().findFragmentByTag(TAG+"::CalcResultFragment");;
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
         CalcResultFragment crf = new CalcResultFragment().newInstance(result);
 
+
         crf.show(ft,TAG+"::CalcResultFragment");
+
+
     }
 }

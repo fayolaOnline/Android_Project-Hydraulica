@@ -1,6 +1,8 @@
 package net.fayola.hydraulica;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
@@ -59,13 +61,17 @@ public class CalcResultFragment extends DialogFragment {
         if (getArguments() != null) {
             mCalcResult = getArguments().getString(CALC_RESULT);
         }
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Dialog);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View v = getActivity().getLayoutInflater().inflate(R.layout.fragment_calc_result, container, false);
+        Dialog dialog = getDialog();
+        dialog.setTitle("Results");
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calc_result, container, false);
+        return  v;
     }
 
     @Override
@@ -110,6 +116,8 @@ public class CalcResultFragment extends DialogFragment {
         });
         frameAnimation.start();
     }
+
+
 
     private void doneText(){
         mTextView.setText("The result is " + mCalcResult);
