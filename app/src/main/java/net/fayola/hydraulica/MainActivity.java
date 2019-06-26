@@ -1,14 +1,21 @@
 package net.fayola.hydraulica;
 
-import android.net.Uri;
+import android.annotation.TargetApi;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
 import android.view.View;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -31,11 +38,24 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, CalcFragment.OnCalcFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, CalcFragment.OnCalcFragmentInteractionListener, OnMapReadyCallback {
 
     public static String TAG ="TheHydraulicaApp";
     private static final String SID = "Laura Fayola Wallace\t#125-431-197";
+
+    //Contact Permissions
+    public static final int PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+
+    private GoogleMap mMap;
 
 
     @Override
@@ -75,7 +95,20 @@ public class MainActivity extends AppCompatActivity
         String initialVal = "0.0";
         CalcFragment cf = CalcFragment.newInstance(initialVal,initialVal);
         ft.replace(R.id.main_placeholder,cf);
+
+        /***
+         * Google Map WORKING!!! just need to put it in proper place
+         */
+//        SupportMapFragment mf = SupportMapFragment.newInstance();
+//        ft.replace(R.id.main_placeholder,mf);
         ft.commit();
+
+//        mf.getMapAsync(this);
+
+//        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map_on_main);
+//        mapFragment.getMapAsync(this);
 
     }
 
@@ -122,7 +155,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_supplier) {
 
         } else if (id == R.id.nav_supplier) {
-            //Runtime Permission asking to ALLOW or DENY access to Android Contacts will appear
+            //Runtime Permission asking to ALLOW or DENY access to Android Contacts (Dangerous Permission) will appear
+
         } else if (id == R.id.nav_contact) {
 
         } else if (id == R.id.nav_about) {
@@ -136,10 +170,9 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
-    //Handling Fragments
-
-
+    /***
+     * Handling Fragments
+     */
 
     @Override
     public void onCalcPerformed(double result) {
@@ -160,7 +193,90 @@ public class MainActivity extends AppCompatActivity
 
 
         crf.show(ft,TAG+"::CalcResultFragment");
+    }
+    /*** END OF Handling Fragments ***/
+
+    /***
+     * Handling Contact Permissions
+     */
+    public void requestContactPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        android.Manifest.permission.READ_CONTACTS)) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("Read Contacts permission");
+                    builder.setPositiveButton(android.R.string.ok, null);
+                    builder.setMessage("Please enable access to contacts.");
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @TargetApi(Build.VERSION_CODES.M)
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            requestPermissions(
+                                    new String[]
+                                            {android.Manifest.permission.READ_CONTACTS}
+                                    , PERMISSIONS_REQUEST_READ_CONTACTS);
+                        }
+                    });
+                    builder.show();
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{android.Manifest.permission.READ_CONTACTS},
+                            PERMISSIONS_REQUEST_READ_CONTACTS);
+                }
+            } else {
+                Log.d(TAG,"Contact Permission granted.");
+                addSupplier();
+            }
+        } else {
+            Log.d(TAG,"Build version doesn't ask for Contact Permission.");
+            addSupplier();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_READ_CONTACTS: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    addSupplier();
+                } else {
+                    Toast.makeText(this, "You have disabled a contacts permission", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+        }
+    }
+
+    /*** END OF Handling Contact Permissions ***/
+
+    private void addSupplier(){
+        //maybe just do a fragment so I don't have to worry about navigation items
+
+    }
 
 
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        float zoom = 15.0f;
+        LatLng toronto = new LatLng(43.6529, -79.3849); //Toronto, City Hall,, Street Level
+        mMap.addMarker(new MarkerOptions().
+                position(toronto).
+                title("Marker in Toronto"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(toronto,zoom));
     }
 }
