@@ -7,4 +7,5 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="edit_width">80dp</dimen>
+    <dimen name="ani_height">80dp</dimen>
 </resources>

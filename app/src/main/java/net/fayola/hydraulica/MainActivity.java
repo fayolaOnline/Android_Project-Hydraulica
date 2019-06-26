@@ -143,5 +143,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onCalcPerformed(double result) {
         Toast.makeText(this,"The force calculated is: " + result,Toast.LENGTH_LONG).show();
+        String resultStr = String.format("%.3f",result);
+        showResultsDialog(resultStr);
+    }
+
+    private void showResultsDialog(String result) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        CalcResultFragment crf = new CalcResultFragment().newInstance(result);
+
+        crf.show(ft,TAG+"::CalcResultFragment");
     }
 }
