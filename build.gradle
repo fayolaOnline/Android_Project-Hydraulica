@@ -26,6 +26,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+//Additional extensions for Architecture Components and Room Database
 ext {
     roomVersion = '2.1.0'
     archLifecycleVersion = '2.1.0-beta01'

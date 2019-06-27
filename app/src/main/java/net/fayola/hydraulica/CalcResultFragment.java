@@ -61,7 +61,8 @@ public class CalcResultFragment extends DialogFragment {
         if (getArguments() != null) {
             mCalcResult = getArguments().getString(CALC_RESULT);
         }
-        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Dialog);
+        setStyle(DialogFragment.STYLE_NORMAL,R.style.Theme_AppCompat_Dialog);
+        //setStyle(DialogFragment.STYLE_NORMAL, );
     }
 
     @Override
@@ -80,7 +81,7 @@ public class CalcResultFragment extends DialogFragment {
 
 
         mTextView = view.findViewById(R.id.result_message);
-        mTextView.setText("initialising");
+        mTextView.setText(getString(R.string.running));
         mImgView = view.findViewById(R.id.animation_view);
         mImgView.setVisibility(ImageView.VISIBLE);
         mImgView.setBackgroundResource(R.drawable.running_piston);
@@ -111,6 +112,9 @@ public class CalcResultFragment extends DialogFragment {
             public void onAnimationAdvanced(int currentFrame, int totalFrames) {
                 //change text based on frame maybe
                 Log.i(TAG,"animation on going: frame "+currentFrame);
+                if(currentFrame == 0 || currentFrame == 5 || currentFrame ==10){
+                    mTextView.setText(mTextView.getText().toString()+".");
+                }
 
             }
         });
