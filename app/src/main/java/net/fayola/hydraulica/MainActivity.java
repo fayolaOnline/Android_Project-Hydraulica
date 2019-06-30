@@ -1,6 +1,7 @@
 package net.fayola.hydraulica;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 
@@ -31,13 +33,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.Menu;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -57,6 +63,10 @@ public class MainActivity extends AppCompatActivity
     private static final String SID = "Laura Fayola Wallace\t#125-431-197";
     private String initialVal = "0.0";
 
+    //Architectual Components & Rooms
+    public static SuppliersViewModel mainSVM;
+    public static SupplierListAdapter mainSupplierAdapter;
+
     //Contact Permissions
     public static final int PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
@@ -75,6 +85,35 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "Would be great if this actually did something.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+
+                //Can create a custom Alert dialog without creating a Fragment class with xml layout file.
+                Context context= view.getContext();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Add Supplier");
+
+                // Set up input
+                final EditText input = new EditText(context);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                // set buttons
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //put input text in database
+                        if(!input.getText().toString().isEmpty())
+                        mainSVM.insert(new Supplier(input.getText().toString()));
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -93,6 +132,18 @@ public class MainActivity extends AppCompatActivity
         Log.i(TAG,"~~~~~ "+SID+" ~ "+dateStr+" ~~~~~");
 
         Log.d(TAG, "Main Activity Created!");
+
+
+        //Initalize database, view model and adapter
+        mainSupplierAdapter =  new SupplierListAdapter(this);
+        mainSVM = ViewModelProviders.of(this).get(SuppliersViewModel.class);
+        mainSVM.getAllSuppliers().observe(this, new Observer<List<Supplier>>() {
+            @Override
+            public void onChanged(List<Supplier> suppliers) {
+                mainSupplierAdapter.setSuppliers(suppliers);
+            }
+        });
+
 
         //Loading initial fragment
         //sending initial valued for the calculation form
@@ -158,6 +209,13 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_supplier) {
             //Runtime Permission asking to ALLOW or DENY access to Android Contacts (Dangerous Permission) will appear
             requestContactPermission();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.setCustomAnimations(android.R.anim.slide_out_right,android.R.anim.slide_out_right);
+            AddSuppliersFragment asf = new AddSuppliersFragment();
+            ft.replace(R.id.main_placeholder,asf);
+
+            ft.addToBackStack(null);
+            ft.commit();
         } else if (id == R.id.nav_contact) {
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -257,6 +315,11 @@ public class MainActivity extends AppCompatActivity
                             PERMISSIONS_REQUEST_READ_CONTACTS);
                 }
             } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Read Contacts permission");
+                builder.setPositiveButton(android.R.string.ok, null);
+                builder.setMessage("Thank you for enabling access to contacts.");
+                builder.show();
                 Log.d(TAG,"Contact Permission granted.");
                 addSupplier();
             }

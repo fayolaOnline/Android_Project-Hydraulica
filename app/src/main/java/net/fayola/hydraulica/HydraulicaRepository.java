@@ -2,12 +2,14 @@ package net.fayola.hydraulica;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
 public class HydraulicaRepository {
+    public static String TAG = MainActivity.TAG + "::HydraulicaRepository";
 
     private SupplierDao mSupplierDao;
     private CarModelDao mCarModelDao;
@@ -24,17 +26,20 @@ public class HydraulicaRepository {
         mEnginePartDao = db.EnginePartDao();
 
         mAllSuppliers = mSupplierDao.getAllSuppliers();
+        //see all suppliers
+        //Log.d(TAG,"mAllSuppliers: " + mAllSuppliers.getValue().toString());
         mAllCarModels = mCarModelDao.getAllCarModels();
         mAllEngineParts = mEnginePartDao.getAllEngineParts();
     }
 
-    LiveData<List<Supplier>> getmAllSuppliers() {
+    LiveData<List<Supplier>> getAllSuppliers() {
+
         return mAllSuppliers;
     }
-    LiveData<List<CarModel>> getmAllCarModels() {
+    LiveData<List<CarModel>> getAllCarModels() {
         return mAllCarModels;
     }
-    LiveData<List<EnginePart>> getmAllEngineParts() {
+    LiveData<List<EnginePart>> getAllEngineParts() {
         return mAllEngineParts;
     }
 
