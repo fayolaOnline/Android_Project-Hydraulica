@@ -1,7 +1,6 @@
 package net.fayola.hydraulica;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -26,7 +26,10 @@ import android.widget.Toast;
  * create an instance of this fragment.
  */
 public class CalcFragment extends Fragment {
-    public static String TAG = MainActivity.TAG+"::CalcFragment";
+    private static String TAG = MainActivity.TAG+"::CalcFragment";
+
+    //image-chart.com url
+    //https://image-charts.com/chart?chts=000000,20,r&chtt=Engine+Check+Chart&cht=pc&chd=t:20,50,30|63,20,17|5,19,41,35&chs=300x300
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_AIRP = "airP";
@@ -40,7 +43,7 @@ public class CalcFragment extends Fragment {
    //UI Components
     private EditText mAirPEdit;
     private EditText mRadiusEdit;
-    private Button mCalcForceBtn;
+    private ImageView mChart;
 
 
     public CalcFragment() {
@@ -86,37 +89,49 @@ public class CalcFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mAirPEdit = view.findViewById(R.id.entered_airp);
         mRadiusEdit = view.findViewById(R.id.entered_radius);
+
         if (getArguments() != null) {
             mAirPEdit.setText(mAirP);
             mRadiusEdit.setText(mRadius);
         }
-        mCalcForceBtn = view.findViewById(R.id.calc_force);
+        Button mCalcForceBtn = view.findViewById(R.id.calc_force);
         mCalcForceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double p, r;
+                double p, r, min;
+                min = CylindricalForce.ATMP+1.0;
                 p = Double.parseDouble(mAirPEdit.getText().toString());
                 r = Double.parseDouble(mRadiusEdit.getText().toString());
-                if (p < 20){
-                    mAirPEdit.setText("20.0");
-                    Toast.makeText(getActivity(),"Air Pressure must be between 10 and 300",Toast.LENGTH_LONG).show();
+                if (p < CylindricalForce.ATMP){
+                    mAirPEdit.setText(Double.toString(min));
+                    Toast.makeText(getActivity(),"Air Pressure must be between " + min + " and 300",Toast.LENGTH_LONG).show();
                 } else if (p > 300){
-                    mAirPEdit.setText("300.0");
-                    Toast.makeText(getActivity(),"Air Pressure must be between 10 and 300",Toast.LENGTH_LONG).show();
-                } else if (r < 0.025) {
-                    mRadiusEdit.setText("1.0");
-                    Toast.makeText(getActivity(),"Radius must be between 0.025 and 10",Toast.LENGTH_LONG).show();
-                } else if (r > 10) {
-                    mRadiusEdit.setText("1.0");
-                    Toast.makeText(getActivity(),"Radius must be between 0.025 and 10",Toast.LENGTH_LONG).show();
+                    mAirPEdit.setText(Double.toString(min));
+                    Toast.makeText(getActivity(),"Air Pressure must be between " + min + " and 300",Toast.LENGTH_LONG).show();
+                } else if (r < 39) {
+                    mRadiusEdit.setText("39.0");
+                    Toast.makeText(getActivity(),"diameter must be between 39mm and 100mm",Toast.LENGTH_LONG).show();
+                } else if (r > 100) {
+                    mRadiusEdit.setText("100.0");
+                    Toast.makeText(getActivity(),"diameter must be between 39mm and 100mm",Toast.LENGTH_LONG).show();
                 } else {
-                    double result = CylindricalForce.check(Double.parseDouble(mAirPEdit.getText().toString()), Double.parseDouble(mRadiusEdit.getText().toString()));
+                    double result = CylindricalForce.check(Double.parseDouble(mAirPEdit.getText().toString()), (Double.parseDouble(mRadiusEdit.getText().toString())/2));
                     if (mListener != null) {
                         mListener.onCalcPerformed(result);
                     }
                 }
             }
         });
+
+        //set image
+        mChart = view.findViewById(R.id.chart);
+        int sizeInPx = 640;
+        int[][] m = {
+                {20,50,30},
+                {63,29,17},
+                {5,19,41,35}};
+
+        new GetImageFromURL(mChart).execute("https://image-charts.com/chart?chts=000000,20,r&cht=pc&chd=t:" + m[0][0] + "," + m[0][1] + "," + m[0][2] + "|" + m[1][0] + "," + m[1][1] + "," + m[1][2] + "|" + m[2][0] + "," + m[2][1] + "," + m[2][2] + "," + m[2][3] + "&chs=" + sizeInPx + "x" + sizeInPx);
 
     }
 

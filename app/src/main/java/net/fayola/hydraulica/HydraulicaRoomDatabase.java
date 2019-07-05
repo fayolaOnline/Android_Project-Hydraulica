@@ -1,21 +1,17 @@
 package net.fayola.hydraulica;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import java.util.List;
-
 @Database(entities = {Supplier.class, CarModel.class, EnginePart.class}, version = 1)
 public abstract class HydraulicaRoomDatabase extends RoomDatabase {
-    public static String TAG = MainActivity.TAG + "::HudraulicaRoomDatabase";
+    private static String TAG = MainActivity.TAG + "::HudraulicaRoomDatabase";
     public abstract SupplierDao SupplierDao();
     public abstract CarModelDao CarModelDao();
     public abstract EnginePartDao EnginePartDao();

@@ -10,7 +10,7 @@
             android:title="@string/menu_pcheck" />
         <item
             android:id="@+id/nav_supplier"
-            android:icon="@android:drawable/ic_menu_manage"
+            android:icon="@android:drawable/ic_menu_add"
             android:title="@string/menu_supplier" />
         <item
             android:id="@+id/nav_contact"
@@ -22,16 +22,12 @@
             android:title="@string/menu_about" />
     </group>
 
-    <item android:title="@string/communicate">
+    <item android:title="@string/give_thanks">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@android:drawable/ic_menu_share"
-                android:title="@string/menu_share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@android:drawable/ic_menu_send"
-                android:title="@string/menu_send" />
+                android:id="@+id/nav_exit"
+                android:icon="@android:drawable/ic_menu_close_clear_cancel"
+                android:title="@string/menu_exit" />
         </menu>
     </item>
 

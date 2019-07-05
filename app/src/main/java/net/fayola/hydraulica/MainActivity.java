@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity
 
     private GoogleMap mMap;
 
+    private FloatingActionButton fab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +81,14 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
+        fab.setEnabled(false);
+        fab.hide();
+        //fab.setVisibility(View.INVISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Would be great if this actually did something.", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Snackbar.make(view, "Would be great if this actually did something.", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
 
                 //Can create a custom Alert dialog without creating a Fragment class with xml layout file.
@@ -166,27 +170,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -197,6 +181,11 @@ public class MainActivity extends AppCompatActivity
 
         //Load in appropriate fragment
         if (id == R.id.nav_pcheck) {
+
+            if(fab.isEnabled()){
+                fab.setEnabled(false);
+                fab.hide();
+            }
             // do pressure calculation
             CalcFragment cf = CalcFragment.newInstance(initialVal,initialVal);
 
@@ -206,7 +195,12 @@ public class MainActivity extends AppCompatActivity
 
             ft.addToBackStack(null);
             ft.commit();
+
         } else if (id == R.id.nav_supplier) {
+            if(!fab.isEnabled()) {
+                fab.setEnabled(true);
+                fab.show();
+            }
             //Runtime Permission asking to ALLOW or DENY access to Android Contacts (Dangerous Permission) will appear
             requestContactPermission();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -217,7 +211,10 @@ public class MainActivity extends AppCompatActivity
             ft.addToBackStack(null);
             ft.commit();
         } else if (id == R.id.nav_contact) {
-
+            if(fab.isEnabled()){
+                fab.setEnabled(false);
+                fab.hide();
+            }
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setCustomAnimations(android.R.anim.slide_out_right,android.R.anim.slide_out_right);
             ContactUsFragment cuf = new ContactUsFragment();
@@ -230,7 +227,8 @@ public class MainActivity extends AppCompatActivity
             //about as Dialog
             showAboutDialog();
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_exit) {
+            finish();
 
         }
 
@@ -245,7 +243,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onCalcPerformed(double result) {
-        Toast.makeText(this,"The force calculated is: " + result,Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"The force calculated is: " + result,Toast.LENGTH_LONG).show();
         String resultStr = String.format("%.3f",result);
         showResultsDialog(resultStr);
     }
@@ -321,11 +319,9 @@ public class MainActivity extends AppCompatActivity
                 builder.setMessage("Thank you for enabling access to contacts.");
                 builder.show();
                 Log.d(TAG,"Contact Permission granted.");
-                addSupplier();
             }
         } else {
             Log.d(TAG,"Build version doesn't ask for Contact Permission.");
-            addSupplier();
         }
     }
 
@@ -336,7 +332,7 @@ public class MainActivity extends AppCompatActivity
             case PERMISSIONS_REQUEST_READ_CONTACTS: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    addSupplier();
+                    //Permissions Granted
                 } else {
                     Toast.makeText(this, "You have disabled a contacts permission", Toast.LENGTH_LONG).show();
                 }
@@ -347,10 +343,7 @@ public class MainActivity extends AppCompatActivity
 
     /*** END OF Handling Contact Permissions ***/
 
-    private void addSupplier(){
-        //maybe just do a fragment so I don't have to worry about navigation items
 
-    }
 
 
 

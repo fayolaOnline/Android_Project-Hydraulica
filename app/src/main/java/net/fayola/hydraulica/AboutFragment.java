@@ -22,9 +22,7 @@ import android.widget.Button;
  */
 public class AboutFragment extends DialogFragment {
 
-    public static String TAG = MainActivity.TAG + "::AboutFragment";
-
-    private Button mAboutBtn;
+    private static String TAG = MainActivity.TAG + "::AboutFragment";
 
 
     public AboutFragment() {
@@ -38,7 +36,7 @@ public class AboutFragment extends DialogFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_about, container, false);
@@ -51,13 +49,12 @@ public class AboutFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mAboutBtn = view.findViewById(R.id.about_close_btn);
+        Button mAboutBtn = view.findViewById(R.id.about_close_btn);
         mAboutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG,"Closing AboutFragment - DialogFragment");
                 dismiss();
-                return;
             }
         });
     }

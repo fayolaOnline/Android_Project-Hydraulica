@@ -10,17 +10,17 @@
     <item android:drawable="@drawable/android_piston_1" android:duration="200" />
 
     <!-- Second Second -->
-    <item android:drawable="@drawable/android_piston_1" android:duration="200" />
     <item android:drawable="@drawable/android_piston_2" android:duration="200" />
     <item android:drawable="@drawable/android_piston_3" android:duration="200" />
     <item android:drawable="@drawable/android_piston_4" android:duration="200" />
     <item android:drawable="@drawable/android_piston_1" android:duration="200" />
+    <item android:drawable="@drawable/android_piston_2" android:duration="200" />
 
     <!-- Third Second -->
-    <item android:drawable="@drawable/android_piston_1" android:duration="200" />
     <item android:drawable="@drawable/android_piston_3" android:duration="200" />
     <item android:drawable="@drawable/android_piston_4" android:duration="200" />
     <item android:drawable="@drawable/android_piston_1" android:duration="200" />
     <item android:drawable="@drawable/android_piston_2" android:duration="200" />
+    <item android:drawable="@drawable/android_piston_3" android:duration="200" />
 
 </animation-list>

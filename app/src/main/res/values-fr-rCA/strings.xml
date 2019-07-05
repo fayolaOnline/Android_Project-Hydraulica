@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- En Fraincais -->
+<resources>
+    <string name="app_name">Hydraulica</string>
+    <string name="navigation_drawer_open">Tiroir de navigation ouvert</string>
+    <string name="navigation_drawer_close">femer le Tiroir de navigation</string>
+    <string name="nav_header_title">Projet Android: Hydraulica</string>
+    <string name="nav_header_subtitle">Créé: Laura Fayola Wallace #125–431–197</string>
+    <string name="nav_header_desc">En-tête de navigation</string>
+    <string name="action_settings">Réglages</string>
+    <string name="action_exit">Sortie</string>
+
+    <string name="menu_pcheck">Calculer la Puissance</string>
+    <string name="menu_supplier">Ajouter un Fournisseur</string>
+    <string name="menu_contact">Contactez Nous</string>
+    <string name="menu_about">À Propos de Nous</string>
+
+    <string name="give_thanks">Merci de voir projet!</string>
+
+    <string name="menu_exit">Sortie</string>
+
+
+    <string name="menu_share">Partager</string>
+    <string name="menu_send">Send Me a Message</string>
+    <string name="item_edit">Modifier</string>
+    <string name="item_delete">Effacer</string>
+
+    <string name="running">Calculatrice</string>
+
+    <string name="calc">Mesurer la Force</string>
+
+    <string name="no_suppliers">Aucun Fournisseur Disponible</string>
+
+    <string name="contactus">
+        Main Auto Service\n
+        402 Main St. Toronto ON\n
+        M4C 4X8\n
+        \n
+        tel: (416) 288- 1636\n
+        email: mechanic@someplace.ca\n
+        url: http://www.fayola.net\n
+    </string>
+    <string name="no_affiliation">**(No affiliation with Main Auto Service)</string>
+    <string name="map">See Map</string>
+    <string name="title_activity_maps">Main Auto Shop</string>
+    <string name="about_text">Créé: Laura Fayola Wallace #125–431–197</string>
+    <string name="ok">OK</string>
+
+
+</resources>

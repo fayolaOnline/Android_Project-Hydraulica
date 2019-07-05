@@ -5,10 +5,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/supplier_textview"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="placeholder text"/>
+        android:layout_margin="4dp"
+        android:elevation="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/activity_horizontal_margin">
+
+            <tag
+                android:id="@+id/supplier_id"
+                android:value="0"
+                />
+
+            <TextView
+                android:id="@+id/supplier_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="placeholder text"/>
+            <TextView
+                android:id="@+id/supply_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&#8942;"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="end"/>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

@@ -116,6 +116,7 @@ public class CalcResultFragment extends DialogFragment {
                     mTextView.setText(mTextView.getText().toString()+".");
                 }
 
+
             }
         });
         frameAnimation.start();
@@ -124,7 +125,7 @@ public class CalcResultFragment extends DialogFragment {
 
 
     private void doneText(){
-        mTextView.setText("The result is " + mCalcResult);
+        mTextView.setText("The result is " + mCalcResult + " Newtons (N)");
 
     }
 

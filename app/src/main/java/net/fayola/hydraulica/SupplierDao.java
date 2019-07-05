@@ -15,14 +15,12 @@ public interface SupplierDao {
     void insert(Supplier supplier);
 
     @Update
-    void update(Supplier suppliers);
+    void update(Supplier... suppliers);
 
     @Delete
-    void delete(Supplier suppliers);
+    void delete(Supplier supplier);
 
     @Query("SELECT * FROM supplier")
     LiveData<List<Supplier>> getAllSuppliers();
 
-    @Query("SELECT * FROM supplier WHERE _id=:id")
-    LiveData<List<Supplier>> getSupplierWithID(final int id);
 }

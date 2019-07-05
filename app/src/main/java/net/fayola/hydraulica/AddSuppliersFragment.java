@@ -1,23 +1,21 @@
 package net.fayola.hydraulica;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -31,11 +29,25 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class AddSuppliersFragment extends Fragment {
-    public static String TAG = MainActivity.TAG + "::AddSuppliersFragment";
-    private RecyclerView mRecyclerView;
+    private static String TAG = MainActivity.TAG + "::AddSuppliersFragment";
     private LinearLayoutManager mLLM;
     public AddSuppliersFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        //super.onCreateContextMenu(menu, v, menuInfo);
+
+        //from StackOverflow
+        //cast ContexyMenu.ContextMenuInfo to AdapterView.AdapterContentMenuInfo
+        //get targetView to cast to widget
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        String selectedSuplier = ((TextView)info.targetView).getText().toString();
+
+        menu.setHeaderTitle(selectedSuplier);
+        menu.add(0,0,0,"Edit");
+        menu.add(0,1,1,"Delete");
     }
 
     @Override
@@ -46,32 +58,29 @@ public class AddSuppliersFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_add_suppliers, container, false);
-
-        return v;
+        return inflater.inflate(R.layout.fragment_add_suppliers, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mRecyclerView = view.findViewById(R.id.recyclerview);
+        RecyclerView mRecyclerView = view.findViewById(R.id.recyclerview);
 
-        if(mRecyclerView!= null) {
+        if(mRecyclerView != null) {
             mRecyclerView.setAdapter(MainActivity.mainSupplierAdapter);
             mRecyclerView.setLayoutManager(mLLM);
-            mRecyclerView.setLongClickable(true);
 
-            mRecyclerView.setOnLongClickListener(new View.OnLongClickListener() {
+            mRecyclerView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public boolean onLongClick(View v) {
-                    //set context menu
+                public void onClick(View v) {
 
-                    return false;
                 }
             });
+
+
 
             Log.d(TAG,"mRecyclerView is NOT NULL.");
 

@@ -25,4 +25,10 @@ public class SuppliersViewModel extends AndroidViewModel {
     public void insert(Supplier supplier) {
         mRepository.insertSupplier(supplier);
     }
+    public void update(Supplier supplier) {
+        mRepository.updateSupplier(supplier);
+    }
+    public void delete(Supplier supplier) {
+        mRepository.deleteSupplier(supplier);
+    }
 }

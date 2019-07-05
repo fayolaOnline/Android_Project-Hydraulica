@@ -15,7 +15,7 @@ public abstract class AnimationDrawableCallback implements Drawable.Callback {
     private boolean mIsCallbackTriggered = false;
 
     //Constructor
-    public AnimationDrawableCallback(AnimationDrawable animationDrawable, Drawable.Callback callback){
+    AnimationDrawableCallback(AnimationDrawable animationDrawable, Drawable.Callback callback){
         mTotalFrames = animationDrawable.getNumberOfFrames();
         mLastFrame = animationDrawable.getFrame(mTotalFrames - 1);
         mWrappedCallback = callback;

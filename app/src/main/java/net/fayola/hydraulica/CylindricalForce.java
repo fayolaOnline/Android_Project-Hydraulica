@@ -15,12 +15,13 @@ import android.util.Log;
 
 public class CylindricalForce {
     public static String TAG = MainActivity.TAG+"::CylyndricalForce";
+    public static double ATMP = 14.696;
 
     public static double check(double airP, double r){
         double ca = Math.pow(r,2.0)*Math.PI;
-        double atmP = 14.696;
-        double result = (airP-atmP)*ca;
-        Log.d(TAG,"Cylindrical force of pressure:" + airP + " and " + "radius:" + r + " = " + result);
+        double result = (airP)*ca;
+        result /= 100;
+        Log.d(TAG,"Cylindrical force of pressure:" + airP + " and " + "radius:" + r + " = " + result + "Newtons (N)");
         return result;
     }
 }
